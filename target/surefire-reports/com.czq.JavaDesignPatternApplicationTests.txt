@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.czq.JavaDesignPatternApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.22 s - in com.czq.JavaDesignPatternApplicationTests

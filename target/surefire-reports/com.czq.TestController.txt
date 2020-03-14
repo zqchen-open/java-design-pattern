@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: com.czq.TestController
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.128 s <<< FAILURE! - in com.czq.TestController
+test  Time elapsed: 0.001 s  <<< ERROR!
+java.lang.NullPointerException
+	at com.czq.TestController.test(TestController.java:25)
+
