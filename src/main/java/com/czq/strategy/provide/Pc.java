@@ -1,10 +1,11 @@
 package com.czq.strategy.provide;
 
+import com.czq.constants.ClientTypeConstants;
 import com.czq.strategy.ResponseProvide;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
-@Component("Pc")
+@Component(ClientTypeConstants.CLIENT_TYPE_PC)
 public class Pc implements ResponseProvide {
     @Override
     public boolean supportClientType(String clientType) {

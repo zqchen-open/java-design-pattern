@@ -5,8 +5,9 @@ import com.czq.strategy.ResponseProvide;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
-@Component(ClientTypeConstants.CLIENT_TYPE_H5)
-public class H5 implements ResponseProvide {
+
+@Component(ClientTypeConstants.CLIENT_TYPE_WXPROG)
+public class Wxprog implements ResponseProvide {
     @Override
     public boolean supportClientType(String clientType) {
         return false;
@@ -14,7 +15,7 @@ public class H5 implements ResponseProvide {
 
     @Override
     public Map<String, Object> getResponse(String key, String vulue) {
-        System.out.println("AH5执行了！");
+        System.out.println("Wxprog执行了！");
         return null;
     }
 }

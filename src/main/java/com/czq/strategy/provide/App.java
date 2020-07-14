@@ -1,14 +1,15 @@
 package com.czq.strategy.provide;
 
+import com.czq.constants.ClientTypeConstants;
 import com.czq.strategy.ResponseProvide;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
-@Component("APP")
+@Component(ClientTypeConstants.CLIENT_TYPE_APP)
 public class App implements ResponseProvide {
     @Override
     public boolean supportClientType(String clientType) {
-        return "APP".equals(clientType);
+        return false;
     }
 
     @Override
