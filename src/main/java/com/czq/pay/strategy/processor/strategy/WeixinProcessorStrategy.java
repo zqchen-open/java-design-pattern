@@ -1,7 +1,7 @@
-package com.czq.strategyreflect.payment.impl;
+package com.czq.pay.strategy.processor.strategy;
 
 import com.czq.enumeration.PaymentMethodCodeEnum;
-import com.czq.strategyreflect.payment.AbstractPaymentStrategy;
+import com.czq.pay.strategy.processor.AbstractPayProcessorStrategy;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -14,7 +14,7 @@ import java.util.SortedMap;
  * @date 20190604
  */
 @Component
-public class WeixinPaymentStrategy extends AbstractPaymentStrategy {
+public class WeixinProcessorStrategy extends AbstractPayProcessorStrategy {
 
 
     @Override

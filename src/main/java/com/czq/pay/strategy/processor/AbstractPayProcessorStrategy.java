@@ -1,7 +1,6 @@
-package com.czq.strategyreflect.payment;
+package com.czq.pay.strategy.processor;
 
 import com.czq.enumeration.PaymentMethodCodeEnum;
-import com.czq.strategyreflect.PaymentStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +12,7 @@ import java.util.SortedMap;
  *
  * @author leonzhangxf
  */
-public abstract class AbstractPaymentStrategy implements PaymentStrategy {
+public abstract class AbstractPayProcessorStrategy implements PayProcessorStrategy {
 
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 

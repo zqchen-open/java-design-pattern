@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @Component
-public class ResponseHandler {
+public class StrategyHandler {
 
     // 第一种策略模式（推荐使用）
     @Autowired

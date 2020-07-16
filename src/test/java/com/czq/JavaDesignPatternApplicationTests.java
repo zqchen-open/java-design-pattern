@@ -1,6 +1,6 @@
 package com.czq;
 
-import com.czq.strategyreflect.PaymentHandler;
+import com.czq.pay.strategy.PayProcessorStrategyHandler;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,10 +26,10 @@ public class JavaDesignPatternApplicationTests {
     public void testPaymentHandler4ItcastAlipayPcPay() {
         String clientType = "PC";
         String strategyCode = "ITCAST_ALIPAY_PC";
-        PaymentHandler paymentHandler = PaymentHandler.getInstance(clientType, strategyCode);
-        Assert.notNull(paymentHandler, "获取不到支付处理器！");
+        PayProcessorStrategyHandler payProcessorStrategyHandler = PayProcessorStrategyHandler.getInstance(clientType, strategyCode);
+        Assert.notNull(payProcessorStrategyHandler, "获取不到支付处理器！");
         String paymentParams = "测试支付策略";
-        String str = paymentHandler.unifiedOrder(paymentParams);
+        String str = payProcessorStrategyHandler.unifiedOrder(paymentParams);
         System.out.println("获取：" + str);
     }
 }

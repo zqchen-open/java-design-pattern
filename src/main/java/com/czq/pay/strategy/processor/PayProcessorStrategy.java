@@ -1,4 +1,4 @@
-package com.czq.strategyreflect;
+package com.czq.pay.strategy.processor;
 
 
 /**
@@ -6,7 +6,7 @@ package com.czq.strategyreflect;
  *
  * @author leonzhangxf
  */
-public interface PaymentStrategy {
+public interface PayProcessorStrategy {
 
     /**
      * 统一下单接口

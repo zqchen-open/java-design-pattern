@@ -1,11 +1,10 @@
-package com.czq.strategyreflect.payment.impl;
+package com.czq.pay.strategy.processor.strategy;
 
 import com.czq.enumeration.PaymentMethodCodeEnum;
-import com.czq.strategyreflect.payment.AbstractPaymentStrategy;
+import com.czq.pay.strategy.processor.AbstractPayProcessorStrategy;
 import com.czq.util.LocalDateTimeUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -17,7 +16,7 @@ import java.util.*;
  * @date 20190604
  */
 @Component
-public class AlipayPaymentStrategy extends AbstractPaymentStrategy {
+public class AlipayPayProcessorStrategy extends AbstractPayProcessorStrategy {
 
     @Override
     protected @NonNull

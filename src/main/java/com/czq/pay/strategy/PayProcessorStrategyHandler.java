@@ -1,7 +1,8 @@
-package com.czq.strategyreflect;
+package com.czq.pay.strategy;
 
 import com.czq.configuration.ApplicationContextHelper;
 import com.czq.constants.ClientTypeConstants;
+import com.czq.pay.strategy.processor.PayProcessorStrategy;
 import com.czq.util.ClassUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
@@ -23,31 +24,31 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author leonzhangxf
  */
-public class PaymentHandler {
+public class PayProcessorStrategyHandler {
 
-    private static Logger logger = LoggerFactory.getLogger(PaymentHandler.class);
+    private static Logger logger = LoggerFactory.getLogger(PayProcessorStrategyHandler.class);
 
     private static final String STRATEGY_CODE_KEY = "STRATEGY_CODE";
 
     /**
      * 其它渠道支付方式code = 具体的支付策略的映射集合
      */
-    private static Map<String, Class<? extends PaymentStrategy>> strategyMap = new ConcurrentHashMap<>(10);
+    private static Map<String, Class<? extends PayProcessorStrategy>> strategyMap = new ConcurrentHashMap<>(10);
 
     /**
      * app渠道支付方式code = 具体的支付策略的映射集合
      */
-    private static Map<String, Class<? extends PaymentStrategy>> appStrategyMap = new ConcurrentHashMap<>(2);
+    private static Map<String, Class<? extends PayProcessorStrategy>> appStrategyMap = new ConcurrentHashMap<>(2);
 
     /**
      * h5渠道支付方式code = 具体的支付策略的映射集合
      */
-    private static Map<String, Class<? extends PaymentStrategy>> h5StrategyMap = new ConcurrentHashMap<>(2);
+    private static Map<String, Class<? extends PayProcessorStrategy>> h5StrategyMap = new ConcurrentHashMap<>(2);
 
     /**
      * pc渠道支付方式code = 具体的支付策略的映射集合
      */
-    private static Map<String, Class<? extends PaymentStrategy>> pcStrategyMap = new ConcurrentHashMap<>(2);
+    private static Map<String, Class<? extends PayProcessorStrategy>> pcStrategyMap = new ConcurrentHashMap<>(2);
 
     /**
      * 平台
@@ -62,12 +63,12 @@ public class PaymentHandler {
      * 根据渠道支付方式确定的支付策略
      * 实现的具体支付策略应该都定义在 {@see impl} 路径下
      */
-    private PaymentStrategy paymentStrategy;
+    private PayProcessorStrategy payProcessorStrategy;
 
     /**
      * 私有构造函数
      */
-    private PaymentHandler(String clientType, String strategyCode) {
+    private PayProcessorStrategyHandler(String clientType, String strategyCode) {
         this.clientType = clientType;
         this.strategyCode = strategyCode;
     }
@@ -78,21 +79,21 @@ public class PaymentHandler {
 //                (Set) ClassUtils.getClassesByInterfaceAndPackageName(PaymentStrategy.class,
 //                        "trade.wcoawxprog", true);
         @SuppressWarnings("unchecked")
-        Set<Class<? extends PaymentStrategy>> appClasses =
-                (Set) ClassUtils.getClassesByInterfaceAndPackageName(PaymentStrategy.class,
+        Set<Class<? extends PayProcessorStrategy>> appClasses =
+                (Set) ClassUtils.getClassesByInterfaceAndPackageName(PayProcessorStrategy.class,
                         "com.czq.strategyreflect.trade.app", true);
         @SuppressWarnings("unchecked")
-        Set<Class<? extends PaymentStrategy>> h5Classes =
-                (Set) ClassUtils.getClassesByInterfaceAndPackageName(PaymentStrategy.class,
+        Set<Class<? extends PayProcessorStrategy>> h5Classes =
+                (Set) ClassUtils.getClassesByInterfaceAndPackageName(PayProcessorStrategy.class,
                         "com.czq.strategyreflect.trade.h5", true);
         @SuppressWarnings("unchecked")
-        Set<Class<? extends PaymentStrategy>> pcClasses =
-                (Set) ClassUtils.getClassesByInterfaceAndPackageName(PaymentStrategy.class,
+        Set<Class<? extends PayProcessorStrategy>> pcClasses =
+                (Set) ClassUtils.getClassesByInterfaceAndPackageName(PayProcessorStrategy.class,
                         "com.czq.strategyreflect.trade.pc", true);
 //        fullFillStrategyMap(classes, PaymentHandler.strategyMap);
-        fullFillStrategyMap(appClasses, PaymentHandler.appStrategyMap);
-        fullFillStrategyMap(h5Classes, PaymentHandler.h5StrategyMap);
-        fullFillStrategyMap(pcClasses, PaymentHandler.pcStrategyMap);
+        fullFillStrategyMap(appClasses, PayProcessorStrategyHandler.appStrategyMap);
+        fullFillStrategyMap(h5Classes, PayProcessorStrategyHandler.h5StrategyMap);
+        fullFillStrategyMap(pcClasses, PayProcessorStrategyHandler.pcStrategyMap);
     }
 
     /**
@@ -101,10 +102,10 @@ public class PaymentHandler {
      * @param classes     具体实现类文件
      * @param strategyMap 需要装载的策略映射，不能为空
      */
-    private static void fullFillStrategyMap(Set<Class<? extends PaymentStrategy>> classes,
-                                            Map<String, Class<? extends PaymentStrategy>> strategyMap) {
+    private static void fullFillStrategyMap(Set<Class<? extends PayProcessorStrategy>> classes,
+                                            Map<String, Class<? extends PayProcessorStrategy>> strategyMap) {
         if (null != classes && classes.size() > 0) {
-            for (Class<? extends PaymentStrategy> clazz : classes) {
+            for (Class<? extends PayProcessorStrategy> clazz : classes) {
                 try {
                     final Field strategyCode = clazz.getField(STRATEGY_CODE_KEY);
                     strategyMap.put(strategyCode.get(null).toString(), clazz);
@@ -126,19 +127,19 @@ public class PaymentHandler {
      * @return 支付处理器，当查询不到时，会返回null
      */
     public static @Nullable
-    PaymentHandler getInstance(String clientType, String strategyCode) {
+    PayProcessorStrategyHandler getInstance(String clientType, String strategyCode) {
         // 缺少必要数据，不会返回支付处理器实例
         if (StringUtils.isEmpty(clientType) || StringUtils.isEmpty(strategyCode)) {
             logger.warn("#####支付处理器生成失败：生成支付处理器参数错误.....");
             return null;
         }
-        PaymentHandler paymentHandler = new PaymentHandler(clientType, strategyCode);
+        PayProcessorStrategyHandler payProcessorStrategyHandler = new PayProcessorStrategyHandler(clientType, strategyCode);
         // 根据被选择渠道支付方式code，匹配得到具体的支付策略
-        PaymentStrategy paymentStrategy = paymentHandler.determinePaymentStrategy();
-        if (null == paymentStrategy) {
+        PayProcessorStrategy payProcessorStrategy = payProcessorStrategyHandler.determinePaymentStrategy();
+        if (null == payProcessorStrategy) {
             return null;
         }
-        return paymentHandler;
+        return payProcessorStrategyHandler;
     }
 
     /**
@@ -146,7 +147,7 @@ public class PaymentHandler {
      *
      * @return 具体的支付策略
      */
-    private PaymentStrategy determinePaymentStrategy() {
+    private PayProcessorStrategy determinePaymentStrategy() {
         //去掉第一个标识，使用第二和第三个标识来定位一个支付策略
         String strategyCode = this.strategyCode;
         if (!StringUtils.hasText(strategyCode)) {
@@ -154,7 +155,7 @@ public class PaymentHandler {
             return null;
         }
         String code = strategyCode.substring((strategyCode.contains("_") ? strategyCode.indexOf("_") : -1) + 1);
-        Class<? extends PaymentStrategy> strategyClazz;
+        Class<? extends PayProcessorStrategy> strategyClazz;
         if (this.clientType.equals(ClientTypeConstants.CLIENT_TYPE_APP)) {
             strategyClazz = appStrategyMap.get(code);
         } else if (this.clientType.equals(ClientTypeConstants.CLIENT_TYPE_PC)) {
@@ -170,9 +171,9 @@ public class PaymentHandler {
         } else {
             try {
                 //通过SpringConfigUtils获取spring生成的具体策略类实现
-                PaymentStrategy paymentStrategy = ApplicationContextHelper.getBean(strategyClazz);
-                this.paymentStrategy = paymentStrategy;
-                return paymentStrategy;
+                PayProcessorStrategy payProcessorStrategy = ApplicationContextHelper.getBean(strategyClazz);
+                this.payProcessorStrategy = payProcessorStrategy;
+                return payProcessorStrategy;
             } catch (Exception ex) {
                 logger.error("#####支付处理器的支付策略实例生成失败.....");
                 logger.error(ExceptionUtils.getStackTrace(ex));
@@ -193,7 +194,7 @@ public class PaymentHandler {
      */
     public @NonNull
     String unifiedOrder(String paymentParams) {
-        String unifiedOrder = paymentStrategy.unifiedOrder(paymentParams);
+        String unifiedOrder = payProcessorStrategy.unifiedOrder(paymentParams);
         return unifiedOrder;
     }
 

@@ -1,14 +1,12 @@
-package com.czq.strategyreflect.trade.h5;
+package com.czq.pay.strategy.platform.h5;
 
 import com.czq.enumeration.PaymentMethodCodeEnum;
-import com.czq.strategyreflect.payment.impl.WeixinPaymentStrategy;
+import com.czq.pay.strategy.processor.strategy.WeixinProcessorStrategy;
 import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.SortedMap;
-import java.util.TreeMap;
 
 /**
  * 传智微信H5
@@ -17,7 +15,7 @@ import java.util.TreeMap;
  * @author leon_zhangxf 20180711
  */
 @Component
-public class WeixinH5PaymentStrategy extends WeixinPaymentStrategy {
+public class WeixinH5ProcessorStrategy extends WeixinProcessorStrategy {
 
     public static final PaymentMethodCodeEnum STRATEGY_CODE = PaymentMethodCodeEnum.WEIXIN_H5;
 
